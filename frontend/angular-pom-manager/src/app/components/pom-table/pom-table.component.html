@@ -1,0 +1,17 @@
+
+<h1>pom-table</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Package</th>
+      <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue: asIs"> {{property.key}} </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue: asIs">
+      <th scope="row">{{packageEntry.key}}</th>
+      <td *ngFor="let propEntry of packageEntry.value | keyvalue: asIs">{{propEntry.value.value}}</td>
+    </tr>
+  </tbody>
+</table>
