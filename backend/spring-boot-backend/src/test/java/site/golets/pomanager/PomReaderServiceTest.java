@@ -2,26 +2,26 @@ package site.golets.pomanager;
 
 import org.apache.maven.model.Model;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import site.golets.pomanager.service.PomReaderService;
 
-import java.util.Properties;
+import java.util.Optional;
 
 @SpringBootTest
 public class PomReaderServiceTest {
 
-    private PomReaderService pomReaderService = new PomReaderService();
+    @Autowired
+    private PomReaderService pomReaderService;
 
     @Test
-    public void readPomFileTest(){
+    public void readPomFileTest() {
+        Optional<Model> model = pomReaderService.readPomModel("pom.xml");
 
-        Model model = pomReaderService.readPomModel("pom.xml");
-
-        Properties properties = model.getProperties();
-
-        properties.entrySet().forEach(System.out::println);
-
+        model.ifPresentOrElse(
+                m -> m.getProperties().entrySet().forEach(System.out::println),
+                () -> System.out.println("Pom was not found")
+        );
     }
 
 }
