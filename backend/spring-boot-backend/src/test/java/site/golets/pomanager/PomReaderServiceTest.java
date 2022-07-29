@@ -18,10 +18,11 @@ public class PomReaderServiceTest {
     public void readPomFileTest() {
         Optional<Model> model = pomReaderService.readPomModel("pom.xml");
 
-        model.ifPresentOrElse(
-                m -> m.getProperties().entrySet().forEach(System.out::println),
-                () -> System.out.println("Pom was not found")
-        );
+        if (model.isPresent()) {
+            model.get().getProperties().entrySet().forEach(System.out::println);
+        } else {
+            System.out.println("Pom was not found");
+        }
     }
 
 }

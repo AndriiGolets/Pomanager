@@ -27,29 +27,32 @@ public class PomReaderService {
     public Optional<Model> readPomModel(String path) {
         try (Stream<Path> pathStream = Files.find(Paths.get(path), 3, (p, a) -> p.endsWith("pom.xml"))) {
             Optional<Path> pomPath = pathStream.findFirst();
-            return pomPath.map(this::pathToModel);
+            return pomPath.flatMap(this::pathToModel);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Model pathToModel(Path pomPath) {
+    private Optional<Model> pathToModel(Path pomPath) {
+        Model model = null;
         try {
-            return pomReader.read(new FileReader(pomPath.toFile()));
+            log.info("Parsing pom: {}", pomPath);
+            model = pomReader.read(new FileReader(pomPath.toFile()));
         } catch (IOException | XmlPullParserException e) {
-            throw new RuntimeException(e);
+            log.error("An error occurred while parsing pom file: {}", pomPath, e);
         }
+        return Optional.ofNullable(model);
     }
 
     public List<Model> scanFileSystem(String rootPath) {
         File root = Paths.get(rootPath).toFile();
 
         if (!root.exists()) {
-            throw new RuntimeException("Path doesn't exists.");
+            throw new RuntimeException(String.format("Path [%s] doesn't exists.", rootPath));
         }
 
         if (root.isFile()) {
-            log.info("Root path must be a directory. Parent directory of a file will be used instead.");
+            log.info("Root path {} must be a directory. Parent directory of a file will be used instead.", rootPath);
             root = root.getParentFile();
         }
 
