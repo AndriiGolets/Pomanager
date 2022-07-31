@@ -19,10 +19,6 @@ export class PomTableComponent implements OnInit {
     this.getPomTable();
   }
 
-  asIs() {
-    return 0;
-  }
-
   selectRow(event, property) {
 
     this.pomTable.pomPropertyNameMap.forEach((val, key) => {
@@ -30,11 +26,6 @@ export class PomTableComponent implements OnInit {
         this.pomTable.pomPropertyNameMap.delete(key);
       }
     })
-    // Object.keys(this.pomTable.pomPropertyNameMap).forEach(key => {
-    //   if (key != property.key) {
-    //     delete this.pomTable.pomPropertyNameMap[key];
-    //   }
-    // })
     this.removeEmptyRows(property);
   }
 
