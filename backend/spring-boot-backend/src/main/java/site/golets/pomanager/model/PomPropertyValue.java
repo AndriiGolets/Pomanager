@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class PomPropertyValue {
 
-    private String value;
+    private String propertyName;
 
 
 }

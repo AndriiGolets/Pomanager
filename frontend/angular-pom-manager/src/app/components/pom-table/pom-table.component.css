@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 2rem;
+}
+
+table {
+  text-align: left;
+  position: relative;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 0.25rem;
+}
+tr.red th {
+  background: red;
+  color: white;
+}
+tr.green th {
+  background: green;
+  color: white;
+}
+tr.purple th {
+  background: purple;
+  color: white;
+}
+thead th {
+  background: lightcyan;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+}
+tbody th {
+  background: lightgray;
+  position: sticky;
+  left: 0; /* Don't forget this, required for the stickiness */
+}
+
+.dbox {
+  position: relative;
+  width: 200px;
+  height: 50px;
+
+}
+/* add diagonal line */
+
+.dbox:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  /*background: linear-gradient(to top right, transparent calc(50% - 1px), gray, transparent calc(50% + 1px)  );*/
+  background-image: linear-gradient(to top right, lightgray 50%, lightcyan 50%);
+}
+/* align boxes with headings */
+.dheading_tr,
+.dheading_bl{
+  position: absolute;
+  /* or wider if needed/possible */
+  width: 80%;
+  height: 80%;
+  overflow: hidden;
+
+}
+.dheading_tr {
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 5px;
+}
+.dheading_bl {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding: 5px;
+}

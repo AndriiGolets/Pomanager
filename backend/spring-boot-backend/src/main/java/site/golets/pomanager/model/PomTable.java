@@ -14,7 +14,7 @@ public class PomTable {
     private Map<String, PomProperty> pomPropertyNameMap = new TreeMap<>();
 
     public void addPomTableRecord(String packageName, String property, String value) {
-        addPomTableRecord(new PomPackage().setName(packageName), new PomProperty().setName(property), new PomPropertyValue().setValue(value));
+        addPomTableRecord(new PomPackage().setName(packageName), new PomProperty().setName(property), new PomPropertyValue().setPropertyName(value));
     }
 
     public void addPomTableRecord(PomPackage packageName, PomProperty property, PomPropertyValue value) {

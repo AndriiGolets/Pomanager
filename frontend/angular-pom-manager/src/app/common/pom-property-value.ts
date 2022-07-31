@@ -1,5 +1,8 @@
 export class PomPropertyValue {
 
-  value : string
+  propertyName : string
 
+  constructor(name: string) {
+    this.propertyName = name;
+  }
 }

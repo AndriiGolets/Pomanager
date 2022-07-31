@@ -25,7 +25,7 @@ public class PomReaderService {
     private final MavenXpp3Reader pomReader = new MavenXpp3Reader();
 
     public Optional<Model> readPomModel(String path) {
-        try (Stream<Path> pathStream = Files.find(Paths.get(path), 3, (p, a) -> p.endsWith("pom.xml"))) {
+        try (Stream<Path> pathStream = Files.find(Paths.get(path), 1, (p, a) -> p.endsWith("pom.xml"))) {
             Optional<Path> pomPath = pathStream.findFirst();
             return pomPath.flatMap(this::pathToModel);
         } catch (IOException e) {
