@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+
+.search-block {
+  margin-bottom: 20px;
+}
+
+.au-btn-submit {
+  margin-left: 20px;
+  position: relative;
+  right: 0;
+  min-width: 95px;
+  color: #fff;
+  border: 1px solid #205b8d;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 43px;
+  background: #205b8d
+}
+
+.au-btn-submit:hover {
+  background: #05143f
+}
+
+.au-btn-submit > i {
+  font-size: 20px;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
+}
