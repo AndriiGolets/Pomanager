@@ -5,11 +5,13 @@ import org.apache.maven.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import site.golets.pomanager.model.PomPackage;
 import site.golets.pomanager.model.PomTable;
 
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
 
 @Service
 @Slf4j
@@ -21,16 +23,20 @@ public class PomTableService {
     @Autowired
     private PomReaderService pomReaderService;
 
+    @Autowired
+    public PomPackageFactory pomPackageFactory;
+
     public PomTable getPomTable() {
         PomTable pomTable = new PomTable();
 
-        Map<String, Map<String, String>> packagesToProperties = pomReaderService.scanFileSystem(scanRootPath).stream()
+        Map<Model, Map<String, String>> packagesToProperties = pomReaderService.scanFileSystem(scanRootPath).stream()
                 .peek(m -> log.info("Parsing model: {}", m))
-                .collect(Collectors.toMap(m -> m.getArtifactId() + ":" + m.getVersion(), this::getPropertiesMap));
+                .collect(Collectors.toMap(identity(), this::getPropertiesMap));
 
-        for (Map.Entry<String, Map<String, String>> packageToProperties : packagesToProperties.entrySet()) {
+        for (Map.Entry<Model, Map<String, String>> packageToProperties : packagesToProperties.entrySet()) {
             for (Map.Entry<String, String> propertyToVersion : packageToProperties.getValue().entrySet()) {
-                pomTable.addPomTableRecord(packageToProperties.getKey(), propertyToVersion.getKey(), propertyToVersion.getValue());
+                PomPackage pomPackage = pomPackageFactory.create(packageToProperties.getKey());
+                pomTable.addPomTableRecord(pomPackage, propertyToVersion.getKey(), propertyToVersion.getValue());
             }
         }
 
@@ -41,7 +47,7 @@ public class PomTableService {
         return model.getProperties().stringPropertyNames().stream()
                 .filter(n -> n.endsWith(".version"))
                 .collect(Collectors.toMap(
-                        Function.identity(),
+                        identity(),
                         n -> model.getProperties().getProperty(n))
                 );
     }
