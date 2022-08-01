@@ -1,8 +1,6 @@
 import {PomPropertyValue} from "./pom-property-value";
 import {PomProperty} from "./pom-property";
 import {PomPackage} from "./pom-package";
-import {KeyValue} from "@angular/common";
-
 
 export class PomTable {
 
@@ -35,9 +33,33 @@ export class PomTable {
     }
   }
 
-  private onCompare(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
-    return -1;
+  public filterByProperty(propertyName: string) {
+    this.pomPropertyNameMap.forEach((val, key) => {
+      console.log("filterTable", key, propertyName);
+      if (!key.includes(propertyName)) {
+        this.pomPropertyNameMap.delete(key);
+      }
+    });
+    this.removeEmptyPackages(propertyName);
   }
+
+  private removeEmptyPackages(propertyName: string) {
+    this.pomTableMap.forEach((val, key, map) => {
+      console.log("removeEmptyRows", Array.from(val.keys()), propertyName);
+      if (Array.from(val.keys()).filter(key => key.includes(propertyName)) === []) {
+        map.delete(key);
+      }
+    })
+  }
+
+  public copy(): PomTable {
+    const newPomTable = new PomTable();
+    newPomTable.pomTableMap = new Map(this.pomTableMap);
+    newPomTable.pomPackageNameMap = new Map(this.pomPackageNameMap);
+    newPomTable.pomPropertyNameMap = new Map(this.pomPropertyNameMap);
+    return newPomTable;
+  }
+
 }
 
 export interface PomTableJson {

@@ -1,0 +1,7 @@
+<div class="pom-manager">
+  <div class="pom-manager__header">
+    <app-search class="search-container" (filterUpdate)="onFilterUpdate($event)" [filter]="filter$ | async"></app-search>
+    <button (click)="reload()" type="submit" class="au-btn-submit reload-btn">Reload</button>
+  </div>
+  <app-pom-table [pomTable]="pomTable$ | async" [filter]="filter$ | async" (filterUpdate)="onFilterUpdate($event)"></app-pom-table>
+</div>

@@ -1,0 +1,14 @@
+.pom-manager__header {
+  position: relative;
+}
+
+.search-container {
+  display: inline-block;
+  float: left;
+}
+
+.reload-btn {
+  position: fixed;
+  display: inline-block;
+  right: 20px;
+}

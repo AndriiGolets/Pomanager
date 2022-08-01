@@ -14,18 +14,10 @@ export class PomTableService {
   constructor(private httpClient: HttpClient) {
   }
 
-  // getPomTable(): Observable<PomTable> {
-  //   return this.httpClient.get<PomTable>(this.baseUrl);
-  // }
-
   getPomTable(): Observable<PomTable> {
     return this.httpClient.get<PomTableJson>(this.baseUrl).pipe(
       map(response => new PomTable(response))
     )
   }
+
 }
-
-
-// interface DataMap {
-//   [key:string]: Data
-// }
