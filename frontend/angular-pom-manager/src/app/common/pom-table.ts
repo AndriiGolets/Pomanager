@@ -35,7 +35,6 @@ export class PomTable {
 
   public filterByProperty(propertyName: string) {
     this.pomPropertyNameMap.forEach((val, key) => {
-      console.log("filterTable", key, propertyName);
       if (!key.includes(propertyName)) {
         this.pomPropertyNameMap.delete(key);
       }
@@ -45,8 +44,8 @@ export class PomTable {
 
   private removeEmptyPackages(propertyName: string) {
     this.pomTableMap.forEach((val, key, map) => {
-      console.log("removeEmptyRows", Array.from(val.keys()), propertyName);
-      if (Array.from(val.keys()).filter(key => key.includes(propertyName)) === []) {
+      console.log(Array.from(val.keys()).filter(key => key.includes(propertyName)));
+      if (Array.from(val.keys()).filter(key => key.includes(propertyName)).length == 0) {
         map.delete(key);
       }
     })
