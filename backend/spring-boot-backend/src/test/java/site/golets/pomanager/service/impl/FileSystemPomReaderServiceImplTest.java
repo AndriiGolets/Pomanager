@@ -1,18 +1,17 @@
-package site.golets.pomanager;
+package site.golets.pomanager.service.impl;
 
 import org.apache.maven.model.Model;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import site.golets.pomanager.service.PomReaderService;
 
 import java.util.Optional;
 
 @SpringBootTest
-public class PomReaderServiceTest {
+public class FileSystemPomReaderServiceImplTest {
 
     @Autowired
-    private PomReaderService pomReaderService;
+    private FileSystemPomReaderServiceImpl pomReaderService;
 
     @Test
     public void readPomFileTest() {

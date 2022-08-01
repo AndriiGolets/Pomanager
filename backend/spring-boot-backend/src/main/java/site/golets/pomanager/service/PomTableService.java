@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import site.golets.pomanager.model.PomPackage;
 import site.golets.pomanager.model.PomTable;
+import site.golets.pomanager.service.impl.FileSystemPomReaderServiceImpl;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +22,7 @@ public class PomTableService {
     private String scanRootPath;
 
     @Autowired
-    private PomReaderService pomReaderService;
+    private FileSystemPomReaderServiceImpl fileSystemPomReaderServiceImpl;
 
     @Autowired
     public PomPackageFactory pomPackageFactory;
@@ -29,7 +30,7 @@ public class PomTableService {
     public PomTable getPomTable() {
         PomTable pomTable = new PomTable();
 
-        Map<Model, Map<String, String>> packagesToProperties = pomReaderService.scanFileSystem(scanRootPath).stream()
+        Map<Model, Map<String, String>> packagesToProperties = fileSystemPomReaderServiceImpl.scan(scanRootPath).stream()
                 .peek(m -> log.info("Parsing model: {}", m))
                 .collect(Collectors.toMap(identity(), this::getPropertiesMap));
 
