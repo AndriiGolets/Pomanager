@@ -27,7 +27,7 @@ export class PomTableComponent implements OnInit {
   selectProperty(event, propertyName) {
     this.filterUpdate.emit(<Filter>{
       ...this.filter,
-      propertyFilter: propertyName.key,
+      propertyFilter: propertyName,
     });
   }
 

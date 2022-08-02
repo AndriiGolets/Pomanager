@@ -47,7 +47,7 @@ public class PomTableService {
 
     private Map<String, String> getPropertiesMap(Model model) {
         return model.getProperties().stringPropertyNames().stream()
-                .filter(n -> n.endsWith(".version"))
+                .filter(n -> n.contains("version"))
                 .collect(Collectors.toMap(
                         identity(),
                         n -> model.getProperties().getProperty(n))

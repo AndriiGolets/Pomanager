@@ -9,7 +9,7 @@ import {PomTableJson} from "../common/pom-table";
 })
 export class PomTableService {
 
-  private baseUrl = 'http://localhost:8080/api/pomtable'
+  private baseUrl = 'https://4687b69c-93ae-45af-9e1c-604765ae5084.mock.pstmn.io/pomtable'
 
   constructor(private httpClient: HttpClient) {
   }

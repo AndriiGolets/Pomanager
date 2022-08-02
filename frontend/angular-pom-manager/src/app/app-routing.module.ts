@@ -6,11 +6,7 @@ import {PomManagerComponent} from "./components/pom-manager/pom-manager.componen
 const appRoutes: Routes = [
   {
     path: '',
-    component: PomManagerComponent,
-  },
-  {
-    path: 'search',
-    redirectTo: ''
+    component: PomManagerComponent
   }
 ];
 

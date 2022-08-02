@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {RouteFilterStateService} from "./state/route-filter-state.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-pom-manager';
+
+  constructor(private routeFilterState: RouteFilterStateService) {
+    this.routeFilterState.init();
+  }
+
 }

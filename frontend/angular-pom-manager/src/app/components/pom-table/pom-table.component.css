@@ -14,18 +14,6 @@ th {
 th, td {
   padding: 0.25rem;
 }
-tr.red th {
-  background: red;
-  color: white;
-}
-tr.green th {
-  background: green;
-  color: white;
-}
-tr.purple th {
-  background: purple;
-  color: white;
-}
 thead th {
   background: lightcyan;
   position: sticky;
@@ -94,4 +82,17 @@ tbody tr td:first-child {
 .package-info__label {
   font-weight: 600;
   font-style: italic;
+}
+
+/*.package-info__name .package-info__label {
+  background-color: #673ab7;
+}
+
+.package-info__version .package-info__label {
+  background-color: #3f51b5;
+}*/
+
+.package-info__branch {
+  background-color: #4caf50;
+  color: azure;
 }
