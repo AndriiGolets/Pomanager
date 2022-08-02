@@ -44,7 +44,9 @@ public class FileSystemPomReaderServiceImpl implements PomReaderService {
         Model model = null;
         try {
             log.info("Parsing pom: {}", pomPath);
-            model = pomReader.read(new FileReader(pomPath.toFile()));
+            File pomFile = pomPath.toFile();
+            model = pomReader.read(new FileReader(pomFile));
+            model.setPomFile(pomFile);
         } catch (IOException | XmlPullParserException e) {
             log.error("An error occurred while parsing pom file: {}", pomPath, e);
         }

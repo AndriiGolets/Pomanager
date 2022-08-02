@@ -1,6 +1,5 @@
 package site.golets.pomanager.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -9,5 +8,9 @@ import lombok.experimental.Accessors;
 public class PomPackage {
 
     private String name;
+
+    private String version;
+
+    private String gitBranch;
 
 }

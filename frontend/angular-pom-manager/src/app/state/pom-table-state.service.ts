@@ -25,7 +25,6 @@ const initialState: PomTableState = {
 export class PomTableStateService extends StateService<PomTableState> {
 
   pomTableFiltered$: Observable<PomTable> = this.select((state) => {
-    console.log("Update triggered");
     return getPomTableFiltered(state.table, state.filter);
   });
 
