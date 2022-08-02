@@ -11,4 +11,5 @@
   position: fixed;
   display: inline-block;
   right: 20px;
+  z-index: 1;
 }

@@ -34,12 +34,21 @@ export class PomTable {
   }
 
   public filterByProperty(propertyName: string) {
-    this.pomPropertyNameMap.forEach((val, key) => {
+    this.pomPropertyNameMap.forEach((val, key, map) => {
       if (!key.includes(propertyName)) {
-        this.pomPropertyNameMap.delete(key);
+        map.delete(key);
       }
     });
     this.removeEmptyPackages(propertyName);
+  }
+
+  public filterByPackage(packageName: string) {
+    this.pomPackageNameMap.forEach((val, key) => {
+      if (!key.includes(packageName)) {
+        this.pomTableMap.delete(key);
+      }
+    });
+    this.removeEmptyProperties();
   }
 
   private removeEmptyPackages(propertyName: string) {
@@ -48,6 +57,17 @@ export class PomTable {
         map.delete(key);
       }
     })
+  }
+
+  private removeEmptyProperties() {
+    let properties = []
+    this.pomTableMap.forEach((val, key) => {
+      properties = properties.concat(Array.from(val.keys()));
+    });
+    const propertiesToDelete = Array.from(this.pomPropertyNameMap.keys()).filter(p => !properties.includes(p));
+    propertiesToDelete.forEach(val => {
+      this.pomPropertyNameMap.delete(val);
+    });
   }
 
   public copy(): PomTable {

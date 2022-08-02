@@ -10,9 +10,7 @@ interface PomTableState {
   filter: Filter
 }
 
-const filterInitialState: Filter = {
-  packageFilter: ''
-}
+const filterInitialState = new Filter('', '')
 
 const initialState: PomTableState = {
   table: new PomTable(),
@@ -58,6 +56,7 @@ export class PomTableStateService extends StateService<PomTableState> {
 
 function getPomTableFiltered(table: PomTable, filter: Filter): PomTable {
   const tableClone: PomTable = table.copy();
-  tableClone.filterByProperty(filter.packageFilter);
+  tableClone.filterByProperty(filter.propertyFilter);
+  tableClone.filterByPackage(filter.packageFilter);
   return tableClone;
 }

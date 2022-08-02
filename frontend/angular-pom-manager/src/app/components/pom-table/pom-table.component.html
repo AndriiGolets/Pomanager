@@ -6,12 +6,12 @@
         <div class="dheading_bl">Package</div>
       </th>
       <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue"
-          (click)="selectRow($event, property)"> {{property.key}} </th>
+          (click)="selectProperty($event, property.key)"> {{property.key}} </th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue">
-      <th scope="row">
+      <th scope="row" (click)="selectPackage($event, packageEntry.key)">
         <div class="package-info" *ngIf="pomTable.pomPackageNameMap.get(packageEntry.key) as packageInfo">
           <span class="package-info__label">Package: </span>
           <span>{{packageInfo.name}}</span><br>
@@ -26,9 +26,7 @@
           {{packageEntry.value.get(property.key).propertyName}}
         </span>
         <ng-template #notShow>
-            <span>
-              -
-            </span>
+            <span>-</span>
         </ng-template>
       </td>
     </tr>

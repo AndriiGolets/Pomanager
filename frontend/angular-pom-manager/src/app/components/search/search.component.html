@@ -2,11 +2,16 @@
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <input type="text"
            class="au-input au-input-xl"
-           placeholder="Search for data ..."
+           placeholder="Property filter"
+           formControlName="propertyFilter"/>
+
+    <input type="text"
+           class="au-input au-input-xl"
+           placeholder="Package filter"
            formControlName="packageFilter"/>
 
     <button type="submit" class="au-btn-submit">
-      Package Search
+      Filter
     </button>
   </form>
 </div>

@@ -24,10 +24,17 @@ export class PomTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  selectRow(event, property) {
+  selectProperty(event, propertyName) {
     this.filterUpdate.emit(<Filter>{
       ...this.filter,
-      packageFilter: property.key,
+      propertyFilter: propertyName.key,
+    });
+  }
+
+  selectPackage(event, packageName) {
+    this.filterUpdate.emit(<Filter>{
+      ...this.filter,
+      packageFilter: packageName,
     });
   }
 

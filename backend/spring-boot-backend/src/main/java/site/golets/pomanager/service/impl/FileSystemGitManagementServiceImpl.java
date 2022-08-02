@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import site.golets.pomanager.service.GitManagementService;
 import site.golets.pomanager.utils.PathUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -30,14 +27,10 @@ public class FileSystemGitManagementServiceImpl implements GitManagementService 
             throw new IllegalStateException("Provided path is not a Git repository.");
         }
 
-        try {
-            Process process = runtime.exec("git rev-parse --abbrev-ref HEAD", null, repositoryDir);
-            process.waitFor();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
+        try (InputStream response = runtime.exec("git rev-parse --abbrev-ref HEAD", null, repositoryDir).getInputStream()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response));
             return reader.readLine();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

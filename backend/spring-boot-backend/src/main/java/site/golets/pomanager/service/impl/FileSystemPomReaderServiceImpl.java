@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -64,7 +65,7 @@ public class FileSystemPomReaderServiceImpl implements PomReaderService {
         }
 
         Optional<File[]> files = Optional.ofNullable(root.listFiles());
-        return Arrays.stream(files.orElse(new File[] {}))
+        return StreamSupport.stream(Arrays.stream(files.orElse(new File[]{})).spliterator(), true)
                 .map(File::getAbsolutePath)
                 .map(this::readPomModel)
                 .filter(Optional::isPresent)

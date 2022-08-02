@@ -30,7 +30,8 @@ public class PomTableService {
     public PomTable getPomTable() {
         PomTable pomTable = new PomTable();
 
-        Map<Model, Map<String, String>> packagesToProperties = fileSystemPomReaderServiceImpl.scan(scanRootPath).stream()
+        Map<Model, Map<String, String>> packagesToProperties = fileSystemPomReaderServiceImpl.scan(scanRootPath)
+                .parallelStream()
                 .peek(m -> log.info("Parsing model: {}", m))
                 .collect(Collectors.toMap(identity(), this::getPropertiesMap));
 
