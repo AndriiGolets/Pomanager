@@ -1,26 +1,36 @@
 <table class="table table-bordered">
   <thead>
-  <tr>
-    <th scope="col" class="dbox">
-      <div class="dheading_tr">Property</div>
-      <div class="dheading_bl">Package</div>
-    </th>
-    <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue" (click)="selectRow($event, property)"> {{property.key}} </th>
-  </tr>
+    <tr>
+      <th scope="col" class="dbox">
+        <div class="dheading_tr">Property</div>
+        <div class="dheading_bl">Package</div>
+      </th>
+      <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue"
+          (click)="selectRow($event, property)"> {{property.key}} </th>
+    </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue">
-    <th scope="row">{{packageEntry.key}}</th>
-    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
+    <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue">
+      <th scope="row">
+        <div class="package-info" *ngIf="pomTable.pomPackageNameMap.get(packageEntry.key) as packageInfo">
+          <span class="package-info__label">Package: </span>
+          <span>{{packageInfo.name}}</span><br>
+          <span class="package-info__label">Version: </span>
+          <span>{{packageInfo.version}}</span><br>
+          <span class="package-info__label">Branch: </span>
+          <span>{{packageInfo.gitBranch}}</span><br>
+        </div>
+      </th>
+      <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
         <span *ngIf="packageEntry.value.get(property.key); else notShow">
           {{packageEntry.value.get(property.key).propertyName}}
         </span>
-      <ng-template #notShow>
-          <span>
-            -
-          </span>
-      </ng-template>
-    </td>
-  </tr>
+        <ng-template #notShow>
+            <span>
+              -
+            </span>
+        </ng-template>
+      </td>
+    </tr>
   </tbody>
 </table>

@@ -17,6 +17,10 @@ public class PomTable {
         addPomTableRecord(new PomPackage().setName(packageName), new PomProperty().setName(property), new PomPropertyValue().setPropertyName(value));
     }
 
+    public void addPomTableRecord(PomPackage pomPackage, String property, String value) {
+        addPomTableRecord(pomPackage, new PomProperty().setName(property), new PomPropertyValue().setPropertyName(value));
+    }
+
     public void addPomTableRecord(PomPackage packageName, PomProperty property, PomPropertyValue value) {
         Map<String, PomPropertyValue> pomPropertyMap = pomTableMap.computeIfAbsent(packageName.getName(), k -> new LinkedHashMap<>());
         pomPropertyMap.put(property.getName(), value);

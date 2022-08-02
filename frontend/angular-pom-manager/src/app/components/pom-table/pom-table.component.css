@@ -33,6 +33,13 @@ tbody th {
   position: sticky;
   left: 0; /* Don't forget this, required for the stickiness */
 }
+thead tr th:first-child,
+tbody tr td:first-child {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  word-break: break-all;
+}
 
 .dbox {
   position: relative;
@@ -79,4 +86,9 @@ tbody th {
   justify-content: flex-start;
   align-items: flex-end;
   padding: 5px;
+}
+
+.package-info__label {
+  font-weight: 600;
+  font-style: italic;
 }

@@ -28,7 +28,7 @@ export class PomTable {
 
       Object.keys(json.pomPackageNameMap).forEach(ppknKey => {
         let ppknVal = json.pomPackageNameMap[ppknKey];
-        this.pomPackageNameMap.set(ppknKey, new PomPackage(ppknVal.name))
+        this.pomPackageNameMap.set(ppknKey, new PomPackage(ppknVal.name, ppknVal.version, ppknVal.gitBranch))
       })
     }
   }
@@ -44,7 +44,6 @@ export class PomTable {
 
   private removeEmptyPackages(propertyName: string) {
     this.pomTableMap.forEach((val, key, map) => {
-      console.log(Array.from(val.keys()).filter(key => key.includes(propertyName)));
       if (Array.from(val.keys()).filter(key => key.includes(propertyName)).length == 0) {
         map.delete(key);
       }
