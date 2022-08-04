@@ -35,13 +35,7 @@ export class SearchComponent implements OnInit {
 
     const newFilter = Object.fromEntries(currentFilterKeys.map((k) => [k, this.searchFormGroup.value[k]]));
 
-    this.router.navigate([], {queryParams: {...newFilter}})
-      .then(() => {
-        this.filterUpdate.emit(<Filter>{
-          ...this.searchFormGroup.value,
-          ...newFilter
-        });
-      });
+    this.router.navigate([], {queryParams: {...newFilter}});
   }
 
 }

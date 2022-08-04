@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PomTable} from "../../common/pom-table";
 import {Filter} from "../../common/filter";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-pom-table',
@@ -18,24 +19,24 @@ export class PomTableComponent implements OnInit {
   @Output()
   filterUpdate: EventEmitter<Filter> = new EventEmitter();
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
   selectProperty(event, propertyName) {
-    this.filterUpdate.emit(<Filter>{
-      ...this.filter,
-      propertyFilter: propertyName,
-    });
+    this.router.navigate([], {queryParams: {
+        ...this.filter,
+        propertyFilter: propertyName,
+      }});
   }
 
   selectPackage(event, packageName) {
-    this.filterUpdate.emit(<Filter>{
-      ...this.filter,
-      packageFilter: packageName,
-    });
+    this.router.navigate([], {queryParams: {
+        ...this.filter,
+        packageFilter: packageName,
+      }});
   }
 
 }

@@ -1,7 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {PomTableStateService} from "./pom-table-state.service";
-import {ActivatedRoute, Router, RoutesRecognized} from "@angular/router";
-import {filter} from "rxjs/operators";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Filter} from "../common/filter";
 
 @Injectable({
@@ -14,17 +13,12 @@ export class RouteFilterStateService implements OnInit {
   }
 
   constructor(private pomTableState: PomTableStateService, private router: Router, private activatedRoute: ActivatedRoute) {
-    this.router.events
-      .pipe(filter(e => e instanceof RoutesRecognized)) // triggers whenever route is changed
-      .subscribe(e => {
-        console.log("Route changed");
-        this.activatedRoute.queryParams.subscribe(params => {
-          this.pomTableState.clearFilters();
-          this.pomTableState.updateFilter(<Filter>{
-            ...params
-          });
-        });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.pomTableState.clearFilters();
+      this.pomTableState.updateFilter(<Filter>{
+        ...params
       });
+    });
   }
 
   ngOnInit(): void {
