@@ -28,12 +28,21 @@
       </div>
     </th>
     <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
-        <span *ngIf="packageEntry.value.get(property.key); else notShow">
-          {{packageEntry.value.get(property.key).propertyName}}
+      <div (dblclick)="showEditField(packageEntry.key, property.key)">
+        <span *ngIf="packageEntry.key === showInputForPackage && property.key === showInputForProperty; else viewMode">
+          <input type="text"
+                 [value]="packageEntry.value.get(property.key) ? packageEntry.value.get(property.key).propertyName : ''"
+                 (keyup.enter)="edit(packageEntry.key, getValue($event))" />
         </span>
-      <ng-template #notShow>
-        <span>-</span>
-      </ng-template>
+        <ng-template #viewMode>
+          <span *ngIf="packageEntry.value.get(property.key); else notShow">
+            {{packageEntry.value.get(property.key).propertyName}}
+          </span>
+          <ng-template #notShow>
+            <span>-</span>
+          </ng-template>
+        </ng-template>
+      </div>
     </td>
   </tr>
   </tbody>

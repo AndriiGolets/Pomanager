@@ -1,6 +1,7 @@
 package site.golets.pomanager.model;
 
 import lombok.Data;
+import org.apache.maven.model.Model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,6 +27,15 @@ public class PomTable {
         pomPropertyMap.put(property.getName(), value);
         pomPackageNameMap.put(packageName.getName(), packageName);
         pomPropertyNameMap.put(property.getName(), property);
+    }
+
+    public void updateProperty(String packageName, String propertyName, String newValue) {
+        Map<String, PomPropertyValue> propertyValueMap = this.pomTableMap.get(packageName);
+        propertyValueMap.merge(propertyName, new PomPropertyValue().setPropertyName(newValue),
+                (v1, v2) -> v2);
+        PomPackage pomPackage = this.pomPackageNameMap.get(packageName);
+        Model model = pomPackage.getModel();
+        model.getProperties().setProperty(propertyName, newValue);
     }
 
 }

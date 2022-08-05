@@ -4,6 +4,7 @@ import {PomTable} from "../common/pom-table";
 import {StateService} from "./state.service";
 import {PomTableService} from "../services/pom-table.service";
 import {Filter} from "../common/filter";
+import {PropertyUpdateEvent} from "../common/property-update-event";
 
 interface PomTableState {
   table: PomTable,
@@ -41,6 +42,20 @@ export class PomTableStateService extends StateService<PomTableState> {
         ...filter,
       },
     });
+  }
+
+  updatePropertyForPackage(propertyUpdateEvent: PropertyUpdateEvent) {
+    this.state.table.pomTableMap
+      .get(propertyUpdateEvent.packageName)
+      .get(propertyUpdateEvent.propertyName)
+      .propertyName = propertyUpdateEvent.newValue;
+
+    this.setState({
+      table: this.state.table,
+      filter: this.state.filter
+    });
+
+    this.apiService.updateProperty(propertyUpdateEvent);
   }
 
   clearFilters() {

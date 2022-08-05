@@ -1,9 +1,8 @@
 package site.golets.pomanager.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import site.golets.pomanager.dto.PropertyUpdateDto;
 import site.golets.pomanager.model.PomTable;
 import site.golets.pomanager.service.PomTableService;
 
@@ -17,6 +16,11 @@ public class PomTableController {
     @GetMapping
     public PomTable getPomTable(){
         return service.getPomTable();
+    }
+
+    @PostMapping("/update-property")
+    public void updateProperty(@RequestBody PropertyUpdateDto propertyUpdateDto) {
+        service.updateProperty(propertyUpdateDto);
     }
 
 }

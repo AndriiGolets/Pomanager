@@ -3,6 +3,7 @@ package site.golets.pomanager.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.stereotype.Service;
 import site.golets.pomanager.service.PomReaderService;
@@ -11,9 +12,11 @@ import site.golets.pomanager.utils.PathUtils;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,8 @@ public class FileSystemPomReaderServiceImpl implements PomReaderService {
 
     private final MavenXpp3Reader pomReader = new MavenXpp3Reader();
 
+    private final MavenXpp3Writer pomWriter = new MavenXpp3Writer();
+
     public Optional<Model> readPomModel(String path) {
         try (Stream<Path> pathStream = Files.find(Paths.get(path), 1, (p, a) -> p.endsWith("pom.xml"))) {
             Optional<Path> pomPath = pathStream.findFirst();
@@ -37,8 +42,20 @@ public class FileSystemPomReaderServiceImpl implements PomReaderService {
     }
 
     @Override
-    public void writePomModel(Model model) {
-        throw new UnsupportedOperationException("TODO");
+    public void updateProperty(Path pomPath, String propertyName, String value) {
+        try (Stream<String> pomLines = Files.lines(pomPath)) {
+            // TODO: Replace with better solution using Document and XPath
+            String pomContent = pomLines.collect(Collectors.joining("\n"));
+
+            pomContent = pomContent.replaceFirst(
+                    String.format("<%s>.*</%s>", propertyName, propertyName),
+                    String.format("<%s>%s</%s>", propertyName, value, propertyName)
+            );
+
+            Files.write(pomPath, pomContent.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     private Optional<Model> pathToModel(Path pomPath) {

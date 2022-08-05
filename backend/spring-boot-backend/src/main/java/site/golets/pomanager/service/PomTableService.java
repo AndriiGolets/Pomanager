@@ -5,9 +5,9 @@ import org.apache.maven.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import site.golets.pomanager.dto.PropertyUpdateDto;
 import site.golets.pomanager.model.PomPackage;
 import site.golets.pomanager.model.PomTable;
-import site.golets.pomanager.service.impl.FileSystemPomReaderServiceImpl;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,15 +22,15 @@ public class PomTableService {
     private String scanRootPath;
 
     @Autowired
-    private FileSystemPomReaderServiceImpl fileSystemPomReaderServiceImpl;
+    private PomReaderService pomReaderService;
 
     @Autowired
     public PomPackageFactory pomPackageFactory;
 
-    public PomTable getPomTable() {
-        PomTable pomTable = new PomTable();
+    private final PomTable pomTable = new PomTable();
 
-        Map<Model, Map<String, String>> packagesToProperties = fileSystemPomReaderServiceImpl.scan(scanRootPath)
+    public PomTable getPomTable() {
+        Map<Model, Map<String, String>> packagesToProperties = pomReaderService.scan(scanRootPath)
                 .parallelStream()
                 .peek(m -> log.info("Parsing model: {}", m))
                 .collect(Collectors.toMap(identity(), this::getPropertiesMap));
@@ -43,6 +43,25 @@ public class PomTableService {
         }
 
         return pomTable;
+    }
+
+    public void updateProperty(PropertyUpdateDto propertyUpdateDto) {
+        pomTable.updateProperty(
+                propertyUpdateDto.getPackageName(),
+                propertyUpdateDto.getPropertyName(),
+                propertyUpdateDto.getNewValue());
+
+        PomPackage pomPackage = pomTable.getPomPackageNameMap().get(propertyUpdateDto.getPackageName());
+
+        this.pomReaderService.updateProperty(
+                pomPackage.getModel().getPomFile().toPath(),
+                propertyUpdateDto.getPropertyName(),
+                propertyUpdateDto.getNewValue());
+
+        log.info("Property [{}] was updated for package [{}] with new value [{}]",
+                propertyUpdateDto.getPropertyName(),
+                propertyUpdateDto.getPackageName(),
+                propertyUpdateDto.getNewValue());
     }
 
     private Map<String, String> getPropertiesMap(Model model) {

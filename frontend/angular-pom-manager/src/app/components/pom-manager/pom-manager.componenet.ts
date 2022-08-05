@@ -3,6 +3,7 @@ import {PomTableStateService} from "../../state/pom-table-state.service";
 import {Filter} from "../../common/filter";
 import {Observable} from "rxjs";
 import {PomTable} from "../../common/pom-table";
+import {PropertyUpdateEvent} from "../../common/property-update-event";
 
 @Component({
   selector: 'pom-manager',
@@ -23,6 +24,10 @@ export class PomManagerComponent implements OnInit {
 
   onFilterUpdate(filter: Filter) {
     this.pomTableState.updateFilter(filter);
+  }
+
+  onPropertyUpdate(propertyUpdateEvent: PropertyUpdateEvent) {
+    this.pomTableState.updatePropertyForPackage(propertyUpdateEvent);
   }
 
   reload() {

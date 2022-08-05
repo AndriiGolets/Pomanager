@@ -20,6 +20,7 @@ public class PomPackageFactory {
 
         pomPackage.setName(model.getArtifactId());
         pomPackage.setVersion(model.getVersion());
+        pomPackage.setModel(model);
 
         String projectDirPath = model.getProjectDirectory().getAbsolutePath();
         try {

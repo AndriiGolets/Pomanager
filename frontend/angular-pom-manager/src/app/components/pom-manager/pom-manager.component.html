@@ -4,5 +4,5 @@
     <app-search class="search-container" (filterUpdate)="onFilterUpdate($event)" [filter]="filter$ | async"></app-search>
     <button (click)="reload()" type="submit" class="au-btn-submit reload-btn">Reload</button>
   </div>
-  <app-pom-table [pomTable]="pomTable$ | async" [filter]="filter$ | async" (filterUpdate)="onFilterUpdate($event)"></app-pom-table>
+  <app-pom-table [pomTable]="pomTable$ | async" [filter]="filter$ | async" (filterUpdate)="onFilterUpdate($event)" (propertyUpdate)="onPropertyUpdate($event)"></app-pom-table>
 </div>
