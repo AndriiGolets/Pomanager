@@ -34,6 +34,7 @@ export class PomTableComponent implements OnInit {
   }
 
   selectProperty(event, propertyName) {
+    console.log(propertyName);
     this.router.navigate([], {queryParams: {
         ...this.filter,
         propertyFilter: propertyName,

@@ -5,13 +5,23 @@
       <div class="dheading_tr">Property</div>
       <div class="dheading_bl">Package</div>
     </th>
-    <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue"
-        (click)="selectProperty($event, property.key)"> {{property.key}} </th>
+    <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
+      <div class="heading-cell">
+        <div class="heading-value">{{property.key}}</div>
+        <div class="dropdown-container" tabindex="-1">
+          <div class="three-dots"></div>
+          <div class="dropdown">
+            <a href="#"><div (mousedown)="selectProperty($event, property.key)">Filter</div></a>
+            <a href="#"><div>Git pull (hard reset)</div></a>
+          </div>
+        </div>
+      </div>
+    </th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue">
-    <th scope="row" (click)="selectPackage($event, packageEntry.key)">
+    <th scope="row">
       <div class="package-info" *ngIf="pomTable.pomPackageNameMap.get(packageEntry.key) as packageInfo">
         <span class="package-info__name">
           <span class="package-info__label">Package: </span>
@@ -22,13 +32,12 @@
           <span class="package-info__value">{{packageInfo.version}}</span><br>
         </span>
         <span class="package-info__branch">
-          <span class="package-info__label">Branch: </span>
           <span class="package-info__value">{{packageInfo.gitBranch}}</span><br>
         </span>
       </div>
     </th>
-    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
-      <div (dblclick)="showEditField(packageEntry.key, property.key)">
+    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue" (dblclick)="showEditField(packageEntry.key, property.key)">
+      <div>
         <span *ngIf="packageEntry.key === showInputForPackage && property.key === showInputForProperty; else viewMode">
           <input type="text"
                  [value]="packageEntry.value.get(property.key) ? packageEntry.value.get(property.key).propertyName : ''"
