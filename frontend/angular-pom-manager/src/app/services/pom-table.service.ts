@@ -10,7 +10,7 @@ import {PropertyUpdateEvent} from "../common/property-update-event";
 })
 export class PomTableService {
 
-  private baseUrl = 'https://4687b69c-93ae-45af-9e1c-604765ae5084.mock.pstmn.io/api/pomtable'
+  private baseUrl = 'http://localhost:8080/api/pom-table'
 
   constructor(private httpClient: HttpClient) {
   }

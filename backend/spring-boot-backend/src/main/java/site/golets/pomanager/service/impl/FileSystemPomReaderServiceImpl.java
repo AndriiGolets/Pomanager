@@ -21,7 +21,6 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -104,14 +103,13 @@ public class FileSystemPomReaderServiceImpl implements PomReaderService {
         }
 
         Optional<File[]> files = Optional.ofNullable(root.listFiles());
-        List<Model> models = StreamSupport.stream(Arrays.stream(files.orElse(new File[]{})).spliterator(), true)
+
+        return StreamSupport.stream(Arrays.stream(files.orElse(new File[]{})).spliterator(), true)
                 .map(File::getAbsolutePath)
                 .map(this::readPomModel)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
-
-        return models;
     }
 
     private LocalDateTime getLastModifiedTime(Path path) {

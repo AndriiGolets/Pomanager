@@ -12,7 +12,7 @@
           <div class="three-dots"></div>
           <div class="dropdown">
             <a href="#"><div (mousedown)="selectProperty($event, property.key)">Filter</div></a>
-            <a href="#"><div>Git pull (hard reset)</div></a>
+            <a href="#"><div (mousedown)="checkoutAndPullByProperty(property.key)">Checkout master (hard reset)</div></a>
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let packageEntry of pomTable.pomTableMap | keyvalue">
-    <th scope="row">
+    <th scope="row" (click)="selectPackage($event, packageEntry.key)">
       <div class="package-info" *ngIf="pomTable.pomPackageNameMap.get(packageEntry.key) as packageInfo">
         <span class="package-info__name">
           <span class="package-info__label">Package: </span>
@@ -36,12 +36,14 @@
         </span>
       </div>
     </th>
-    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue" (dblclick)="showEditField(packageEntry.key, property.key)">
+    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue" (dblclick)="showEditFieldFor(packageEntry.key, property.key)">
       <div>
-        <span *ngIf="packageEntry.key === showInputForPackage && property.key === showInputForProperty; else viewMode">
+        <span *ngIf="showInput && packageEntry.key === packageName && property.key === propertyName; else viewMode">
           <input type="text"
                  [value]="packageEntry.value.get(property.key) ? packageEntry.value.get(property.key).propertyName : ''"
-                 (keyup.enter)="edit(packageEntry.key, getValue($event))" />
+                 (keyup.enter)="edit(getEventValue($event))"
+                 (keyup.escape)="showInput = false"
+                 (blur)="showInput = false" />
         </span>
         <ng-template #viewMode>
           <span *ngIf="packageEntry.value.get(property.key); else notShow">
