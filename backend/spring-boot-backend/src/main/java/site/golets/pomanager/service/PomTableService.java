@@ -9,6 +9,7 @@ import site.golets.pomanager.dto.PropertyUpdateDto;
 import site.golets.pomanager.model.PomPackage;
 import site.golets.pomanager.model.PomTable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,13 +37,22 @@ public class PomTableService {
                 .collect(Collectors.toMap(identity(), this::getPropertiesMap));
 
         for (Map.Entry<Model, Map<String, String>> packageToProperties : packagesToProperties.entrySet()) {
+            PomPackage pomPackage = pomPackageFactory.create(packageToProperties.getKey());
             for (Map.Entry<String, String> propertyToVersion : packageToProperties.getValue().entrySet()) {
-                PomPackage pomPackage = pomPackageFactory.create(packageToProperties.getKey());
                 pomTable.addPomTableRecord(pomPackage, propertyToVersion.getKey(), propertyToVersion.getValue());
             }
         }
 
         return pomTable;
+    }
+
+    public List<String> packageNamesToPaths(List<String> packageNames) {
+        return packageNames.stream()
+                .map(n -> pomTable.getPomPackageNameMap().get(n)
+                        .getModel()
+                        .getProjectDirectory()
+                        .getAbsolutePath())
+                .collect(Collectors.toList());
     }
 
     public void updateProperty(PropertyUpdateDto propertyUpdateDto) {

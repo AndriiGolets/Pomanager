@@ -18,7 +18,7 @@ public class PomPackageFactory {
     public PomPackage create(Model model) {
         PomPackage pomPackage = new PomPackage();
 
-        pomPackage.setName(model.getArtifactId());
+        pomPackage.setName(model.getPomFile().getParentFile().getName());
         pomPackage.setVersion(model.getVersion());
         pomPackage.setModel(model);
 

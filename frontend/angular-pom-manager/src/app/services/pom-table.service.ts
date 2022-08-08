@@ -10,7 +10,7 @@ import {PropertyUpdateEvent} from "../common/property-update-event";
 })
 export class PomTableService {
 
-  private baseUrl = 'http://localhost:8080/api/pomtable'
+  private baseUrl = 'http://localhost:8080/api/pom-table'
 
   constructor(private httpClient: HttpClient) {
   }

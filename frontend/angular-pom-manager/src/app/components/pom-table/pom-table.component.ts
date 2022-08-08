@@ -3,6 +3,7 @@ import {PomTable} from "../../common/pom-table";
 import {Filter} from "../../common/filter";
 import {Router} from "@angular/router";
 import {PropertyUpdateEvent} from "../../common/property-update-event";
+import {GitManagementService} from "../../services/git-management.service";
 
 @Component({
   selector: 'app-pom-table',
@@ -23,17 +24,20 @@ export class PomTableComponent implements OnInit {
   @Output()
   propertyUpdate: EventEmitter<PropertyUpdateEvent> = new EventEmitter();
 
-  showInputForPackage: string;
+  showInput: boolean;
 
-  showInputForProperty: string;
+  packageName: string;
 
-  constructor(private router: Router) {
+  propertyName: string;
+
+  constructor(private router: Router, private gitManagementService: GitManagementService) {
   }
 
   ngOnInit(): void {
   }
 
   selectProperty(event, propertyName) {
+    console.log(propertyName);
     this.router.navigate([], {queryParams: {
         ...this.filter,
         propertyFilter: propertyName,
@@ -47,25 +51,33 @@ export class PomTableComponent implements OnInit {
       }});
   }
 
-  showEditField(packageName: string, propertyName: string) {
-    if (!this.showInputForPackage && !this.showInputForProperty) {
-      this.showInputForPackage = packageName;
-      this.showInputForProperty = propertyName;
-    }
+  showEditFieldFor(packageName: string, propertyName: string) {
+    this.packageName = packageName;
+    this.propertyName = propertyName;
+    this.showInput = true;
   }
 
-  edit(packageName: string, newValue:string) {
-    if (!this.showInputForPackage && !this.showInputForProperty) {
+  edit(newValue: string) {
+    if (!this.showInput) {
       return;
     }
 
-    this.propertyUpdate.emit(new PropertyUpdateEvent(this.showInputForPackage, this.showInputForProperty, newValue));
-
-    this.showInputForProperty = undefined;
-    this.showInputForPackage = undefined;
+    this.propertyUpdate.emit(new PropertyUpdateEvent(this.packageName, this.propertyName, newValue));
+    this.showInput = false;
   }
 
-  getValue(event: Event): string {
+  checkoutAndPullByProperty(propertyName: string) {
+    const packagesToUpdate = [];
+    this.pomTable.pomTableMap.forEach((value, key) => {
+      if (value.has(propertyName)) {
+        packagesToUpdate.push(key);
+      }
+    });
+
+    this.gitManagementService.checkoutAndPull("master", packagesToUpdate);
+  }
+
+  getEventValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
 

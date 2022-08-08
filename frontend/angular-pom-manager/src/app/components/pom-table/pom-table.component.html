@@ -5,8 +5,18 @@
       <div class="dheading_tr">Property</div>
       <div class="dheading_bl">Package</div>
     </th>
-    <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue"
-        (click)="selectProperty($event, property.key)"> {{property.key}} </th>
+    <th scope="col" *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
+      <div class="heading-cell">
+        <div class="heading-value">{{property.key}}</div>
+        <div class="dropdown-container" tabindex="-1">
+          <div class="three-dots"></div>
+          <div class="dropdown">
+            <a href="#"><div (mousedown)="selectProperty($event, property.key)">Filter</div></a>
+            <a href="#"><div (mousedown)="checkoutAndPullByProperty(property.key)">Checkout master (hard reset)</div></a>
+          </div>
+        </div>
+      </div>
+    </th>
   </tr>
   </thead>
   <tbody>
@@ -22,17 +32,18 @@
           <span class="package-info__value">{{packageInfo.version}}</span><br>
         </span>
         <span class="package-info__branch">
-          <span class="package-info__label">Branch: </span>
           <span class="package-info__value">{{packageInfo.gitBranch}}</span><br>
         </span>
       </div>
     </th>
-    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue">
-      <div (dblclick)="showEditField(packageEntry.key, property.key)">
-        <span *ngIf="packageEntry.key === showInputForPackage && property.key === showInputForProperty; else viewMode">
+    <td *ngFor="let property of pomTable.pomPropertyNameMap | keyvalue" (dblclick)="showEditFieldFor(packageEntry.key, property.key)">
+      <div>
+        <span *ngIf="showInput && packageEntry.key === packageName && property.key === propertyName; else viewMode">
           <input type="text"
                  [value]="packageEntry.value.get(property.key) ? packageEntry.value.get(property.key).propertyName : ''"
-                 (keyup.enter)="edit(packageEntry.key, getValue($event))" />
+                 (keyup.enter)="edit(getEventValue($event))"
+                 (keyup.escape)="showInput = false"
+                 (blur)="showInput = false" />
         </span>
         <ng-template #viewMode>
           <span *ngIf="packageEntry.value.get(property.key); else notShow">

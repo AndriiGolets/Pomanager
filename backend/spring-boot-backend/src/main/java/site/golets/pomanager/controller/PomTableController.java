@@ -7,20 +7,20 @@ import site.golets.pomanager.model.PomTable;
 import site.golets.pomanager.service.PomTableService;
 
 @RestController
-@RequestMapping("/api/pomtable")
+@RequestMapping("/api/pom-table")
 @AllArgsConstructor
 public class PomTableController {
 
-    private PomTableService service;
+    private PomTableService pomTableService;
 
     @GetMapping
     public PomTable getPomTable(){
-        return service.getPomTable();
+        return pomTableService.getPomTable();
     }
 
     @PostMapping("/update-property")
     public void updateProperty(@RequestBody PropertyUpdateDto propertyUpdateDto) {
-        service.updateProperty(propertyUpdateDto);
+        pomTableService.updateProperty(propertyUpdateDto);
     }
 
 }
