@@ -17,6 +17,8 @@ public class PomPackage {
 
     private String gitBranch;
 
+    private int branchStatus;
+
     @JsonIgnore
     private Model model;
 

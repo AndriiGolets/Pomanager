@@ -24,10 +24,10 @@ public class PomPackageFactory {
 
         String projectDirPath = model.getProjectDirectory().getAbsolutePath();
         try {
-            String branchName = gitManagementService.getBranchName(projectDirPath);
-            pomPackage.setGitBranch(branchName);
+            pomPackage.setGitBranch(gitManagementService.getBranchName(projectDirPath));
+            pomPackage.setBranchStatus(gitManagementService.getBranchStatus(projectDirPath, "master"));
         } catch (Exception e) {
-            log.warn("Git branch name couldn't be retrieved from path [{}]: ", projectDirPath, e);
+            log.warn("Error during git info retrieval for path [{}]: ", projectDirPath, e);
             pomPackage.setGitBranch(DEFAULT_BRANCH_NAME);
         }
 

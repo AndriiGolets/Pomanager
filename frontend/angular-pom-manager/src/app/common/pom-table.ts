@@ -28,7 +28,7 @@ export class PomTable {
 
       Object.keys(json.pomPackageNameMap).forEach(ppknKey => {
         let ppknVal = json.pomPackageNameMap[ppknKey];
-        this.pomPackageNameMap.set(ppknKey, new PomPackage(ppknVal.name, ppknVal.version, ppknVal.gitBranch))
+        this.pomPackageNameMap.set(ppknKey, new PomPackage(ppknVal.name, ppknVal.version, ppknVal.gitBranch, ppknVal.branchStatus))
       })
     }
   }

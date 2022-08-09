@@ -5,7 +5,12 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.revwalk.RevWalkUtils;
+import org.eclipse.jgit.revwalk.filter.RevFilter;
 import org.springframework.stereotype.Service;
 import site.golets.pomanager.service.GitManagementService;
 import site.golets.pomanager.utils.PathUtils;
@@ -34,8 +39,42 @@ public class FileSystemGitManagementServiceImpl implements GitManagementService 
         }
 
         try (Git git = Git.open(repositoryDir)) {
-            log.info("Get current branch for repository [{}]", gitRepositoryPath);
             return git.getRepository().getBranch();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getBranchStatus(String gitRepositoryPath, String relativeBranch) {
+        String branchName = getBranchName(gitRepositoryPath);
+
+        File repositoryDir = Paths.get(gitRepositoryPath).toFile();
+
+        int aheadCount, behindCount;
+
+        try (Git git = Git.open(repositoryDir)) {
+            try (RevWalk walk = new RevWalk(git.getRepository())) {
+                String fullLocalBranchName = Constants.R_HEADS + branchName;
+                String fullRelativeBranchName = Constants.R_HEADS + "origin/" + relativeBranch;
+                RevCommit localCommit = walk.parseCommit(git.getRepository().exactRef(fullLocalBranchName).getObjectId());
+                Ref fullRelativeBranchRef = git.getRepository().exactRef(fullRelativeBranchName);
+                if (fullRelativeBranchRef == null) {
+                    fullRelativeBranchName = Constants.R_HEADS + relativeBranch;
+                    fullRelativeBranchRef = git.getRepository().exactRef(fullRelativeBranchName);
+                }
+                RevCommit trackingCommit = walk.parseCommit(fullRelativeBranchRef.getObjectId());
+                log.info("Tracking commit different between {} and {}", fullLocalBranchName, fullRelativeBranchRef);
+                walk.setRevFilter(RevFilter.MERGE_BASE);
+                walk.markStart(localCommit);
+                walk.markStart(trackingCommit);
+                RevCommit mergeBase = walk.next();
+                walk.reset();
+                walk.setRevFilter(RevFilter.ALL);
+                aheadCount = RevWalkUtils.count(walk, localCommit, mergeBase);
+                behindCount = RevWalkUtils.count(walk, trackingCommit, mergeBase);
+            }
+            return aheadCount > 0 ? aheadCount : behindCount > 0 ? -behindCount : 0;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

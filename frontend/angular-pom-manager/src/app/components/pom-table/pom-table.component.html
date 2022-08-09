@@ -31,7 +31,7 @@
           <span class="package-info__label">Version: </span>
           <span class="package-info__value">{{packageInfo.version}}</span><br>
         </span>
-        <span class="package-info__branch">
+        <span class="package-info__branch" [ngStyle]="{'background-color': (packageInfo.branchStatus > 0 ? '#039be5' : packageInfo.branchStatus < 0 ? '#d32f2f' : '#4caf50')}">
           <span class="package-info__value">{{packageInfo.gitBranch}}</span><br>
         </span>
       </div>

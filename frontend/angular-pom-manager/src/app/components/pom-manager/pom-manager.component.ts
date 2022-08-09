@@ -32,7 +32,6 @@ export class PomManagerComponent implements OnInit {
 
   reload() {
     this.pomTableState.load();
-    this.pomTableState.clearFilters();
   }
 
 }

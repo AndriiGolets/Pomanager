@@ -99,7 +99,6 @@ tbody tr td:first-child {
 }
 
 .package-info__branch {
-  background-color: #4caf50;
   border-radius: 10px;
   color: azure;
 }
