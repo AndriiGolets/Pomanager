@@ -7,9 +7,11 @@ export class PomTable {
   pomTableMap: Map<string, Map<string, PomPropertyValue>> = new Map<string, Map<string, PomPropertyValue>>();
   pomPackageNameMap: Map<string, PomPackage> = new Map<string, PomPackage>();
   pomPropertyNameMap: Map<string, PomProperty> = new Map<string, PomProperty>();
+  json: PomTableJson;
 
   constructor(json?: PomTableJson) {
     if (json) {
+      this.json = json;
       Object.keys(json.pomTableMap).forEach(ptmKey => {
         let ptmVal = json.pomTableMap[ptmKey];
         let ppvMap = new Map<string, PomPropertyValue>();
@@ -75,6 +77,7 @@ export class PomTable {
     newPomTable.pomTableMap = new Map(this.pomTableMap);
     newPomTable.pomPackageNameMap = new Map(this.pomPackageNameMap);
     newPomTable.pomPropertyNameMap = new Map(this.pomPropertyNameMap);
+    newPomTable.json = this.json;
     return newPomTable;
   }
 

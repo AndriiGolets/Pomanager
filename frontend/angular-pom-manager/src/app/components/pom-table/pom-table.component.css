@@ -154,3 +154,13 @@ a div:hover {
   max-height: 100vh;
   transition: opacity 0.2s, z-index 0.2s;
 }
+
+/* Material */
+.demo-table {
+  width: 100%;
+}
+
+.mat-column {
+  padding-left: 16px;
+  font-size: 20px;
+}

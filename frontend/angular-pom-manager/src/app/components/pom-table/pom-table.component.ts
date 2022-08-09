@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {PomTable} from "../../common/pom-table";
 import {Filter} from "../../common/filter";
 import {Router} from "@angular/router";
@@ -12,8 +12,44 @@ import {GitManagementService} from "../../services/git-management.service";
 })
 export class PomTableComponent implements OnInit {
 
+  _pomTable: PomTable;
+
+  get pomTable() {
+    return this._pomTable;
+  }
+
   @Input()
-  pomTable: PomTable;
+  set pomTable(pomTable: PomTable) {
+    this.matPomTable = {};
+    this._pomTable = pomTable;
+    const jsonTable = pomTable.json;
+    for (let propertyName of Object.keys(jsonTable.pomPropertyNameMap)) {
+      for (let packageName of Object.keys(jsonTable.pomPackageNameMap)) {
+        let packageMap = jsonTable.pomTableMap[packageName];
+        if (packageMap[propertyName]) {
+          if (this.matPomTable[packageName]) {
+            this.matPomTable[packageName][propertyName] = packageMap[propertyName].propertyName;
+          } else {
+            this.matPomTable[packageName] = {
+              [propertyName]: packageMap[propertyName].propertyName
+            };
+          }
+        } else {
+          if (this.matPomTable[packageName]) {
+            this.matPomTable[packageName][propertyName] = '-';
+          } else {
+            this.matPomTable[packageName] = {
+              [propertyName]: '-'
+            };
+          }
+        }
+      }
+    }
+    this.matTableDataSource = Object.values(this.matPomTable);
+    this.matColHeader = Object.keys(jsonTable.pomPropertyNameMap);
+    this.matRowHeader = Object.keys(jsonTable.pomPackageNameMap);
+    console.log(this.matTableDataSource);
+  }
 
   @Input()
   filter: Filter;
@@ -29,6 +65,16 @@ export class PomTableComponent implements OnInit {
   packageName: string;
 
   propertyName: string;
+
+  /* Material */
+
+  matPomTable: any;
+
+  matTableDataSource: any;
+
+  matRowHeader: any;
+
+  matColHeader: any;
 
   constructor(private router: Router, private gitManagementService: GitManagementService) {
   }

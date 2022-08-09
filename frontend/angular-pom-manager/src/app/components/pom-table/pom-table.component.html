@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<!--<table class="table table-bordered">
   <thead>
   <tr>
     <th scope="col" class="dbox">
@@ -57,4 +57,18 @@
     </td>
   </tr>
   </tbody>
+</table>-->
+<table mat-table [dataSource]="matTableDataSource" class="mat-elevation-z8 demo-table">
+  <!--<ng-container *ngFor="let headerName of matColHeader" [matColumnDef]="headerName">
+    <th mat-header-cell *matHeaderCellDef>{{headerName}}</th>
+    <td mat-cell *matCellDef="let element">{{element[headerName]}}</td>
+  </ng-container>-->
+
+  <ng-container *ngFor="let headerName of matColHeader" [matColumnDef]="headerName">
+    <th mat-header-cell *matHeaderCellDef>{{headerName}}</th>
+    <td mat-cell *matCellDef="let element">{{element[headerName]}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="matColHeader; sticky: true"></tr>
+  <tr mat-row *matRowDef="let row; columns: matColHeader;"></tr>
 </table>
