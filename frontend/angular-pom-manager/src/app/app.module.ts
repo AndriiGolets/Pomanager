@@ -9,6 +9,7 @@ import {SearchComponent} from './components/search/search.component';
 import {PomManagerComponent} from "./components/pom-manager/pom-manager.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppRoutingModule} from "./app-routing.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {AppRoutingModule} from "./app-routing.module";
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [PomTableService],
   bootstrap: [AppComponent]
